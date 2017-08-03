@@ -1,6 +1,6 @@
 export default class Game {
 
-	constructor(element, width, height) {
+	constructor(element, width, height) { //Constructor Class
 		this.element = element;
 		this.width = width;
 		this.height = height;
@@ -8,7 +8,7 @@ export default class Game {
 		// Other code goes here...
 	}
 
-	render() {
+	render() { //Render method is drawing the SVGs
 		// More code goes here...
 	}
 
