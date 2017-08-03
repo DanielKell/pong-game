@@ -1,5 +1,6 @@
 import {
-	SVG_NS, KEYS
+	SVG_NS,
+	KEYS
 } from '../settings.js';
 import Board from './Board.js';
 import Paddle from './Paddle.js';
@@ -16,8 +17,24 @@ export default class Game {
 
 		this.gameElement = document.getElementById(element) //Store a reference to the element we are attaching the game to.
 		this.board = new Board(this.width, this.height); //Instantiated the board
-		this.player1 = new Paddle(this.height, this.paddleWidth, this.paddleHeight, this.boardGap, (this.height - this.paddleHeight)/2);
-		this.player2 = new Paddle(this.height, this.paddleWidth, this.paddleHeight, (this.width - this.boardGap - this.paddleWidth), (this.height - this.paddleHeight)/2);
+		this.player1 = new Paddle(
+			this.height, 
+			this.paddleWidth, 
+			this.paddleHeight, 
+			this.boardGap, 
+			(this.height - this.paddleHeight) / 2,
+			KEYS.a,
+			KEYS.z
+			);
+		this.player2 = new Paddle(
+			this.height, 
+			this.paddleWidth, 
+			this.paddleHeight, 
+			(this.width - this.boardGap - this.paddleWidth), 
+			(this.height - this.paddleHeight) / 2,
+			KEYS.up,
+			KEYS.down
+			);
 	}
 
 	render() { //Render method is drawing the SVGs. Here we render the outermost SVG element.
