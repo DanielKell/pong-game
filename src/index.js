@@ -8,5 +8,3 @@ const game = new Game('game', 512, 256); //Pass into new variables to create new
     game.render(); //Calling the render method on the game object.
     requestAnimationFrame(gameLoop); //Recursively calling itself over and over. Similar to using a timer, but only works when the browser/tab is in focus
 })();
-
-

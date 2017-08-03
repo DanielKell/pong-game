@@ -1,14 +1,18 @@
-import { SVG_NS} from '../settings.js';
+import {
+	SVG_NS
+} from '../settings.js';
 import Board from './Board.js';
+import Paddle from './Paddle.js'
 
 export default class Game {
 
 	constructor(element, width, height) { //Constructor Class
-	    this.width = width;
+		this.width = width;
 		this.height = height;
 
 		this.gameElement = document.getElementById(element) //Store a reference to the element we are attaching the game to.
 		this.board = new Board(this.width, this.height); //Instantiated the board
+		this.paddle = new Paddle('256', '5', '20', '10', '10');
 	}
 
 	render() { //Render method is drawing the SVGs. Here we render the outermost SVG element.
@@ -21,6 +25,6 @@ export default class Game {
 		this.gameElement.appendChild(svg); //Appending to div with an id of game.
 		this.board.render(svg); //Connecting board to svg. In render method it's accepting argument of svg, and creating the pieces inside the board.
 		//Passing in the above let svg
+		this.paddle.render(svg); //Rendering the paddle on board
 	}
-
 }
