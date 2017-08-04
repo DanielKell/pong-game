@@ -4,6 +4,7 @@ import {
 } from '../settings.js';
 import Board from './Board.js';
 import Paddle from './Paddle.js';
+import Ball from './Ball.js';
 
 export default class Game {
 
@@ -11,12 +12,16 @@ export default class Game {
 		this.width = width;
 		this.height = height;
 
-		this.paddleWidth = 8;
+		this.paddleWidth = 8; //Can make these constants/lets and move them into settings.js and import into the constructor
 		this.paddleHeight = 56;
 		this.boardGap = 10;
+		this.ballRadius = 8;
 
 		this.gameElement = document.getElementById(element) //Store a reference to the element we are attaching the game to.
 		this.board = new Board(this.width, this.height); //Instantiated the board
+
+		this.ball = new Ball(this.width, this.height, this.ballRadius); //Instantiated the ball
+
 		this.player1 = new Paddle(
 			this.height, 
 			this.paddleWidth, 
@@ -24,8 +29,10 @@ export default class Game {
 			this.boardGap, 
 			(this.height - this.paddleHeight) / 2,
 			KEYS.a,
-			KEYS.z
+			KEYS.z,
+			KEYS.spaceBar
 			);
+			
 		this.player2 = new Paddle(
 			this.height, 
 			this.paddleWidth, 
@@ -33,11 +40,26 @@ export default class Game {
 			(this.width - this.boardGap - this.paddleWidth), 
 			(this.height - this.paddleHeight) / 2,
 			KEYS.up,
-			KEYS.down
+			KEYS.down,
+			KEYS.spaceBar
 			);
+
+
+			document.addEventListener('keydown', event => { //Setup other key functions to the game here!
+				switch (event.key) { 
+					case KEYS.spaceBar:
+					this.pause = !this.pause; //Set to inverted value
+					break;
+				}		//Program it to do something crazy on up up down down, etc?
+
+			});
 	}
 
 	render() { //Render method is drawing the SVGs. Here we render the outermost SVG element.
+		if (this.pause) {
+			return; //This shuts down rest of the function
+		}
+
 		this.gameElement.innerHTML = ''; //Create empty string to stop if from reloading everything over and over.
 		let svg = document.createElementNS(SVG_NS, 'svg'); //Store newly created element. Need NS as it's a namespace element. Imported SVG_NS above.
 		svg.setAttributeNS(null, 'version', '1.1');
@@ -49,5 +71,6 @@ export default class Game {
 		//Passing in the above let svg
 		this.player1.render(svg); //Rendering the paddles on board
 		this.player2.render(svg);
+		this.ball.render(svg, this.player1, this.player2); //Render the ball. Passing players through allows us to track where the players are (for paddle collision)
 	}
 }
