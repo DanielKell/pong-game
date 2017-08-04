@@ -10,9 +10,10 @@ export default class Ball {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.direction = 1;
+        this.ping = new Audio('public/sounds/cat_kitten.wav');
+        this.ping2 = new Audio('public/sounds/you_suck.wav');
         this.reset();
         //this.wallCollision();
-
     }
 
     wallCollision() {
@@ -33,7 +34,7 @@ export default class Ball {
         if (this.vx > 0) { //Checking if ball is moving towards right paddle
 
             //detect player 2 paddle collision
-            let paddle  = player2.coordinates(player2.x, player2.y, player2.width, player2.height); //Paddle class gives us these coordinates
+            let paddle = player2.coordinates(player2.x, player2.y, player2.width, player2.height); //Paddle class gives us these coordinates
             //let paddle2 = player1.coordinates(player1.x, player1.y, player1.width, player1.height);
             let [leftX, rightX, topY, bottomY] = paddle; //Destructuring paddle array
             //let [leftX, rightX, topY, bottomY] = paddle2;
@@ -41,21 +42,23 @@ export default class Ball {
             // let rightX = paddle[1];
             // let topY = paddle[2];
             // let bottomY = paddle[3];
-            if (((this.x + this.radius) >= leftX) 
-            && ((this.y) >= topY)
-            && ((this.y) <= bottomY)) {
+            if (((this.x + this.radius) >= leftX) &&
+                ((this.y) >= topY) &&
+                ((this.y) <= bottomY)) {
                 this.vx = -this.vx;
+                this.ping.play();
             }
 
         } else {
-            let paddle  = player1.coordinates(player1.x, player1.y, player1.width, player1.height); //Paddle class gives us these coordinates
+            let paddle = player1.coordinates(player1.x, player1.y, player1.width, player1.height); //Paddle class gives us these coordinates
 
             let [leftX, rightX, topY, bottomY] = paddle; //Destructuring paddle array
 
-            if (((this.x - this.radius) <= rightX) 
-            && ((this.y) >= topY)
-            && ((this.y) <= bottomY)) {
+            if (((this.x - this.radius) <= rightX) &&
+                ((this.y) >= topY) &&
+                ((this.y) <= bottomY)) {
                 this.vx = -this.vx;
+                this.ping.play();
             }
 
         }
@@ -63,7 +66,8 @@ export default class Ball {
 
     goal(player) { //increment winning player score
         player.score++
-        this.reset();
+        this.ping2.play(); //Added a sound file saying "you suck" when someone scores
+            this.reset();
     }
 
     // <circle cx="256" cy="125" r="8" fill="white"/> 
@@ -76,12 +80,12 @@ export default class Ball {
 
         //detect score. If the right wall was touched increment player 1 score, else if left wall touched increment player 2 score
         if (this.x - this.radius <= 0) {
-            this.goal(player1);
-            console.log('Player 1: ' + player1.score);
-            
-        } else if (this.x + this.radius >= this.boardWidth) {
             this.goal(player2);
             console.log('Player 2: ' + player2.score);
+
+        } else if (this.x + this.radius >= this.boardWidth) {
+            this.goal(player1);
+            console.log('Player 1: ' + player1.score);
             this.vx = -this.vx;
         }
 
@@ -92,6 +96,8 @@ export default class Ball {
         circle.setAttributeNS(null, 'fill', 'white');
         svg.appendChild(circle);
 
+        // 		<text x="210" y="30" text-anchor="middle" fill="white" font-size="26">2</text>
+        // <text x="300" y="30" text-anchor="middle" fill="white" font-size="26">3</text>
     }
 
     reset() {

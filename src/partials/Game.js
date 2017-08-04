@@ -5,6 +5,7 @@ import {
 import Board from './Board.js';
 import Paddle from './Paddle.js';
 import Ball from './Ball.js';
+import Score from './Score.js'
 
 export default class Game {
 
@@ -32,7 +33,7 @@ export default class Game {
 			KEYS.z,
 			KEYS.spaceBar
 			);
-			
+
 		this.player2 = new Paddle(
 			this.height, 
 			this.paddleWidth, 
@@ -43,6 +44,14 @@ export default class Game {
 			KEYS.down,
 			KEYS.spaceBar
 			);
+
+		this.score1 = new Score(
+			((this.width/2)-30), 30
+		)
+
+		this.score2 = new Score(
+			((this.width/2)+30), 30
+		)
 
 
 			document.addEventListener('keydown', event => { //Setup other key functions to the game here!
@@ -72,5 +81,8 @@ export default class Game {
 		this.player1.render(svg); //Rendering the paddles on board
 		this.player2.render(svg);
 		this.ball.render(svg, this.player1, this.player2); //Render the ball. Passing players through allows us to track where the players are (for paddle collision)
+		this.score1.render(svg, this.player1.score);
+		this.score2.render(svg, this.player2.score);
+
 	}
 }
