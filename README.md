@@ -84,4 +84,4 @@ PERSONAL LEARNINGS
 
 OBJECTIVE
 
-Pong is a two player game where each player tries to deflect the ball using their paddle onto the other side of the players court. 
+Purrrong is a two player game where each player tries to deflect the ball using their paddle onto the other side of the players court. Players can determine what score they wish to play up to as there is no score limit.
