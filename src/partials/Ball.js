@@ -4,14 +4,15 @@ import {
 
 export default class Ball {
 
-    constructor(boardWidth, boardHeight, radius) {
+    constructor(boardWidth, boardHeight, radius, speed) {
 
         this.radius = radius;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
+        this.speed = speed;
         this.direction = 1;
         this.ping = new Audio('public/sounds/cat_kitten.wav');
-        this.ping2 = new Audio('public/sounds/you_suck.wav');
+        //this.ping2 = new Audio('public/sounds/you_suck.wav');
         this.reset();
         //this.wallCollision();
     }
@@ -27,7 +28,6 @@ export default class Ball {
         } else if (hitTop || hitBottom) {
             this.vy = -this.vy;
         }
-
     }
 
     paddleCollision(player1, player2) {
@@ -66,11 +66,10 @@ export default class Ball {
 
     goal(player) { //increment winning player score
         player.score++
-        this.ping2.play(); //Added a sound file saying "you suck" when someone scores
+        //this.ping2.play(); //Added a sound file saying "you suck" when someone scores
             this.reset();
     }
 
-    // <circle cx="256" cy="125" r="8" fill="white"/> 
     render(svg, player1, player2) {
         this.x += this.vx; //Can refactor this later by putting in separate method.
         this.y += this.vy;
@@ -81,12 +80,20 @@ export default class Ball {
         //detect score. If the right wall was touched increment player 1 score, else if left wall touched increment player 2 score
         if (this.x - this.radius <= 0) {
             this.goal(player2);
-            console.log('Player 2: ' + player2.score);
+
+            if(player2.height > 25) { //This stops the paddle from getting too small
+            player2.height -= 6; //When player 2 scores, they get a disadvantage of a smaller paddle, and player 1 gets an advantage 
+            player1.height += 6;
+            }
 
         } else if (this.x + this.radius >= this.boardWidth) {
             this.goal(player1);
-            console.log('Player 1: ' + player1.score);
             this.vx = -this.vx;
+            
+            if (player1.height > 25) {
+            player2.height += 6;
+            player1.height -= 6;
+            }
         }
 
         let circle = document.createElementNS(SVG_NS, 'circle');
@@ -95,14 +102,11 @@ export default class Ball {
         circle.setAttributeNS(null, 'r', this.radius);
         circle.setAttributeNS(null, 'fill', 'white');
         svg.appendChild(circle);
-
-        // 		<text x="210" y="30" text-anchor="middle" fill="white" font-size="26">2</text>
-        // <text x="300" y="30" text-anchor="middle" fill="white" font-size="26">3</text>
     }
 
     reset() {
         this.x = this.boardWidth / 2;
-        this.y = this.boardHeight / 2;
+        this.y = Math.random() * 256; //Causes the reset of ball to appear from a random spot in the middle of board.
 
         this.vy = 0;
 
@@ -110,7 +114,6 @@ export default class Ball {
             this.vy = Math.floor(Math.random() * 10 - 5); //Grab random number between 5 and -5. Set it here so it happens upon reset.
         }
 
-        this.vx = this.direction * (6 - Math.abs(this.vy)); //X vector based on y number. 6 minus absolute value
+        this.vx = this.direction * (6 - Math.abs(this.vy)) * this.speed; //X vector based on y number. 6 minus absolute value
     }
-
 }
