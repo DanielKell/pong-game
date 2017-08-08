@@ -12,7 +12,6 @@ export default class Ball {
         this.speed = speed;
         this.direction = 1;
         this.ping = new Audio('public/sounds/cat_kitten.wav');
-        //this.ping2 = new Audio('public/sounds/you_suck.wav');
         this.reset();
         //this.wallCollision();
     }
@@ -66,7 +65,6 @@ export default class Ball {
 
     goal(player) { //increment winning player score
         player.score++
-            //this.ping2.play(); //Added a sound file saying "you suck" when someone scores
             this.reset();
     }
 
