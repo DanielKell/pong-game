@@ -66,7 +66,7 @@ export default class Ball {
 
     goal(player) { //increment winning player score
         player.score++
-        //this.ping2.play(); //Added a sound file saying "you suck" when someone scores
+            //this.ping2.play(); //Added a sound file saying "you suck" when someone scores
             this.reset();
     }
 
@@ -81,18 +81,18 @@ export default class Ball {
         if (this.x - this.radius <= 0) {
             this.goal(player2);
 
-            if(player2.height > 25) { //This stops the paddle from getting too small
-            player2.height -= 6; //When player 2 scores, they get a disadvantage of a smaller paddle, and player 1 gets an advantage 
-            player1.height += 6;
+            if (player2.height > 25) { //This stops the paddle from getting too small
+                player2.height -= 6; //When player 2 scores, they get a disadvantage of a smaller paddle, and player 1 gets an advantage 
+                player1.height += 6;
             }
 
         } else if (this.x + this.radius >= this.boardWidth) {
             this.goal(player1);
             this.vx = -this.vx;
-            
+
             if (player1.height > 25) {
-            player2.height += 6;
-            player1.height -= 6;
+                player2.height += 6;
+                player1.height -= 6;
             }
         }
 
@@ -106,8 +106,7 @@ export default class Ball {
 
     reset() {
         this.x = this.boardWidth / 2;
-        this.y = Math.random() * 256; //Causes the reset of ball to appear from a random spot in the middle of board.
-
+        this.y = Math.random() * this.boardHeight; //Causes the reset of ball to appear from a random spot in the middle of board.
         this.vy = 0;
 
         while (this.vy === 0) { //Keep doing this until it doesn't equal 0 anymore; So the ball doesn't go horizontally;

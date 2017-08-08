@@ -70,7 +70,7 @@ export default class Game {
 			return; //This shuts down rest of the function
 		}
 
-		this.gameElement.innerHTML = ''; //Create empty string to stop if from reloading everything over and over.
+		this.gameElement.innerHTML = ''; //Create empty string to stop it from reloading everything over and over.
 		let svg = document.createElementNS(SVG_NS, 'svg'); //Store newly created element. Need NS as it's a namespace element. Imported SVG_NS above.
 		svg.setAttributeNS(null, 'version', '1.1');
 		svg.setAttributeNS(null, 'width', this.width); //Defining height and width of game board
